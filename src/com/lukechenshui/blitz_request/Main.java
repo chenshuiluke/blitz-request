@@ -1,4 +1,4 @@
-package com.lukechenshui.blitz;
+package com.lukechenshui.blitz_request;
 
 public class Main {
 
