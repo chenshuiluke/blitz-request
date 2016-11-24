@@ -1,6 +1,6 @@
 #Blitz-Request
 The best commandline REST API and stress tester.
-
+![blitz-request demo](https://raw.githubusercontent.com/chenshuiluke/blitz-request/master/demo.gif)
 ##Usage:
     java -jar blitz-request.jar  -n <number_of_requests> -m <GET/POST/PUT/DELETE> -u <url>
 ##Example:
