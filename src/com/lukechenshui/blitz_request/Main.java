@@ -6,9 +6,12 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
@@ -44,7 +47,17 @@ public class Main {
     });
 
     public static void main(String[] args) {
+        Unirest.setTimeouts(0, 0);
         Config config = new Config();
+        /*
+        for(int counter = 0; counter < args.length; counter++){
+            String arg = args[counter];
+            arg.replace("\"", "\\\"");
+            arg.replace(",", "\\,");
+            arg.replace("{", "\\{");
+            arg.replace("}", "\\}");
+        }
+        */
         new JCommander(config, args);
         sendRequest();
         Status.report();
@@ -76,6 +89,19 @@ public class Main {
                         case "DEFAULT":
                             throw new IllegalStateException();
                     }
+                    if (!Config.getUrlQueries().isEmpty()) {
+                        try {
+                            JSONObject obj = new JSONObject(Config.getUrlQueries());
+                            Iterator<?> keys = obj.keys();
+                            while (keys.hasNext()) {
+                                String key = (String) keys.next();
+                                request.queryString(key, obj.get(key).toString());
+                            }
+                        } catch (JSONException exc) {
+
+                        }
+                    }
+
                     try {
                         long startTime = System.currentTimeMillis();
                         HttpResponse response = request.asString();

@@ -27,7 +27,8 @@ public class BlitzRequestTest {
     @Test
     public void testParameterParsing() {
         Config config = new Config();
-        String[] args = new String[]{"--url", "https://mappa-server.herokuapp.com", "--method", "GET", "--num", "10"};
+        String[] args = new String[]{"--url", "https://mappa-server.herokuapp.com", "--method", "GET", "--num", "10",
+                "-uq", "{\"name\":\"Luke\",\"age\":\"19\"}"};
         new JCommander(config, args);
         assertEquals("https://mappa-server.herokuapp.com", Config.getUrl());
         assertEquals("GET", Config.getMethod());

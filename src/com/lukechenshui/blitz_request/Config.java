@@ -17,12 +17,14 @@ public class Config {
     private static int numRequests;
     @Parameter(names = {"-t", "--threads"}, description = "The number of threads to use to make requests", validateWith = PositiveInteger.class)
     private static int numThreads;
-
+    @Parameter(names = {"-uq", "--url-queries"}, description = "URL query data")
+    private static String urlQueries;
     public Config() {
         url = "";
         method = "GET";
         numRequests = 1;
         numThreads = 1;
+        urlQueries = "";
     }
 
     public static String getUrl() {
@@ -55,5 +57,13 @@ public class Config {
 
     public static void setNumThreads(int numThreads) {
         Config.numThreads = numThreads;
+    }
+
+    public static String getUrlQueries() {
+        return urlQueries;
+    }
+
+    public static void setUrlQueries(String urlQueries) {
+        Config.urlQueries = urlQueries;
     }
 }

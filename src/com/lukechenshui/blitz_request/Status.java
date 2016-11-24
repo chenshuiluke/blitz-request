@@ -94,7 +94,7 @@ public class Status {
         report.append("Time taken: " + df.format(totalTimeTaken) + "\n");
         report.append("Number of Errors: " + numErrors + " (" + (numErrors / Config.getNumRequests()) * 100 + "%)\n");
         report.append("Number of Successes: " + numSuccesses + " (" + (numSuccesses / Config.getNumRequests()) * 100 + "%)\n");
-        report.append("Avg. Response Time: " + df.format(avgResponseTime));
+        report.append("Avg. Response Time: " + df.format(avgResponseTime) + "\n");
 
         if (numErrors > 0) {
             report.append("Error responses:\n");
