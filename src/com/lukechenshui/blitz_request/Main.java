@@ -48,7 +48,6 @@ public class Main {
 
     public static void main(String[] args) {
         Unirest.setTimeouts(300000, 300000);
-        Unirest.setConcurrency(10000, 10000);
         Config config = new Config();
         /*
         for(int counter = 0; counter < args.length; counter++){
