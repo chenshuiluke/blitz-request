@@ -19,11 +19,19 @@ public class Config {
     private static int numThreads;
     @Parameter(names = {"-uq", "--url-queries"}, description = "URL query data")
     private static String urlQueries;
+    @Parameter(names = {"-se" ,"--show-errors"}, description = "Show error messages")
+    private static boolean showErrors;
+    @Parameter(names = {"-ss", "--show-successes"}, description = "Show success messages")
+    private static boolean showSuccesses;
+    @Parameter(names = {"-nc", "--num-connections"}, description = "The maximum number of concurrent connections. This " +
+            "is limited by the number of open files your OS allows.", validateWith = PositiveInteger.class)
+    private static int numConcurrentConnections;
     public Config() {
         url = "";
         method = "GET";
         numRequests = 1;
         numThreads = 1;
+        numConcurrentConnections = 1024;
         urlQueries = "";
     }
 
@@ -65,5 +73,29 @@ public class Config {
 
     public static void setUrlQueries(String urlQueries) {
         Config.urlQueries = urlQueries;
+    }
+
+    public static boolean isShowErrors() {
+        return showErrors;
+    }
+
+    public static void setShowErrors(boolean showErrors) {
+        Config.showErrors = showErrors;
+    }
+
+    public static boolean isShowSuccesses() {
+        return showSuccesses;
+    }
+
+    public static void setShowSuccesses(boolean showSuccesses) {
+        Config.showSuccesses = showSuccesses;
+    }
+
+    public static int getNumConcurrentConnections() {
+        return numConcurrentConnections;
+    }
+
+    public static void setNumConcurrentConnections(int numConcurrentConnections) {
+        Config.numConcurrentConnections = numConcurrentConnections;
     }
 }

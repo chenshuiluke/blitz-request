@@ -13,7 +13,8 @@ public class Status {
     public static int numErrors = 0;
     public static int numSuccesses = 0;
     public static int numCompletedRequests = 0;
-    public static HashMap<Integer, String> responses = new HashMap<>();
+    public static HashMap<Integer, String> errorResponses = new HashMap<>();
+    public static HashMap<Integer, String> successResponses = new HashMap<>();
     public static double totalResponseTime = 0;
     public static double avgResponseTime = 0;
     public static long totalTimeTaken = 0;
@@ -45,11 +46,19 @@ public class Status {
     }
 
     public static void addErrorResponse(HttpResponse response) {
-        if (!responses.containsValue(response.getBody().toString())) {
-            responses.put(numErrors, response.getBody().toString());
+        if (!errorResponses.containsValue(response.getBody().toString())) {
+            errorResponses.put(numErrors, response.getBody().toString());
         }
 
         incrementNumErrors();
+    }
+
+    public static void addSuccessResponse(HttpResponse response) {
+        if (!successResponses.containsValue(response.getBody().toString())) {
+            successResponses.put(numSuccesses, response.getBody().toString());
+        }
+
+        incrementNumSuccesses();
     }
 
     public static double getTotalResponseTime() {
@@ -96,11 +105,20 @@ public class Status {
         report.append("Number of Successes: " + numSuccesses + " (" + (numSuccesses / Config.getNumRequests()) * 100 + "%)\n");
         report.append("Avg. Response Time: " + df.format(avgResponseTime) + "\n");
 
-        if (numErrors > 0) {
-            report.append("Error responses:\n");
+        if (numSuccesses > 0 && Config.isShowSuccesses()) {
+            report.append("Success Responses:\n");
+            for (int counter = 0; counter < numSuccesses; counter++) {
+                if (successResponses.get(counter) != null) {
+                    report.append(successResponses.get(counter) + "\n");
+                }
+            }
+        }
+
+        if (numErrors > 0 && Config.isShowErrors()) {
+            report.append("Error Responses:\n");
             for (int counter = 0; counter < numErrors; counter++) {
-                if (responses.get(counter) != null) {
-                    report.append(responses.get(counter) + "\n");
+                if (errorResponses.get(counter) != null) {
+                    report.append(errorResponses.get(counter) + "\n");
                 }
             }
         }

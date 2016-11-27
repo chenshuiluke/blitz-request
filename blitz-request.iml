@@ -10,5 +10,6 @@
     <orderEntry type="library" name="com.mashape.unirest:unirest-java:1.4.9" level="project" />
     <orderEntry type="library" name="com.beust:jcommander:1.58" level="project" />
     <orderEntry type="library" name="junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="jcommander-1.58" level="project" />
   </component>
 </module>

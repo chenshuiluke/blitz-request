@@ -25,29 +25,33 @@ public class Main {
         public void run() {
 
             while (true) {
-                lock.lock();
-                DecimalFormat df = new DecimalFormat("#.###ms");
-                df.setRoundingMode(RoundingMode.CEILING);
                 System.out.print("                                                                                          \r");
-                long currentTime = System.currentTimeMillis();
-                System.out.print("No. completed requests: " + Status.getNumCompletedRequests() + " / " +
-                        Config.getNumRequests() + " No. errors: " +
-                        Status.getNumErrors() + " No. successes: " + Status.getNumSuccesses() + " Runtime: "
-                        + String.valueOf(currentTime - overallStartTime)
-                        + " Avg. response time: " + df.format(Status.getAvgResponseTime()));
-                lock.unlock();
+                if(Status.getNumCompletedRequests() > 0){
+                    DecimalFormat df = new DecimalFormat("#.###ms");
+                    df.setRoundingMode(RoundingMode.CEILING);
+
+                    long currentTime = System.currentTimeMillis();
+                    System.out.print("No. completed requests: " + Status.getNumCompletedRequests() + " / " +
+                            Config.getNumRequests() + " No. errors: " +
+                            Status.getNumErrors() + " No. successes: " + Status.getNumSuccesses() + " Runtime: "
+                            + String.valueOf(currentTime - overallStartTime)
+                            + " Avg. response time: " + df.format(Status.getAvgResponseTime()));
+
+                }
+                else{
+                    System.out.print("Initializing...");
+                }
                 try {
                     Thread.sleep(5000);
                 } catch (InterruptedException exc) {
                     exc.printStackTrace();
                 }
-
             }
         }
     });
 
     public static void main(String[] args) {
-        Unirest.setTimeouts(300000, 300000);
+        System.err.close();
         Config config = new Config();
         /*
         for(int counter = 0; counter < args.length; counter++){
@@ -59,6 +63,7 @@ public class Main {
         }
         */
         new JCommander(config, args);
+        Unirest.setConcurrency(Config.getNumConcurrentConnections(), Config.getNumConcurrentConnections());
         sendRequest();
         Status.report();
     }
@@ -111,12 +116,12 @@ public class Main {
                         if (response.getStatus() != 200) {
                             Status.addErrorResponse(response);
                         } else {
-                            Status.incrementNumSuccesses();
+                            Status.addSuccessResponse(response);
                         }
                         Status.addResponseTime((double) elapsedTime);
                         lock.unlock();
                     } catch (UnirestException exc) {
-                        exc.printStackTrace();
+                        //exc.printStackTrace();
                     }
                 }
             });
