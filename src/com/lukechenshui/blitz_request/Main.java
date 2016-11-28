@@ -73,6 +73,19 @@ public class Main {
 
         overallStartTime = System.currentTimeMillis();
         statusOutputThread.start();
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            public void run() {
+                try {
+                    System.out.println("Shutting down...");
+                    executor.shutdownNow();
+                    Unirest.shutdown();
+                    statusOutputThread.stop();
+                }
+                catch (Exception exc){
+                    
+                }
+            }
+        });
         for (int counter = 0; counter < Config.getNumRequests(); counter++) {
             Thread thread = new Thread(new Runnable() {
                 @Override
