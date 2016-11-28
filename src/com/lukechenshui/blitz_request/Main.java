@@ -52,6 +52,7 @@ public class Main {
 
     public static void main(String[] args) {
         System.err.close();
+        Unirest.setTimeouts(0, 0);
         Config config = new Config();
         /*
         for(int counter = 0; counter < args.length; counter++){
@@ -82,7 +83,7 @@ public class Main {
                     statusOutputThread.stop();
                 }
                 catch (Exception exc){
-                    
+
                 }
             }
         });
@@ -135,6 +136,7 @@ public class Main {
                         lock.unlock();
                     } catch (UnirestException exc) {
                         //exc.printStackTrace();
+                        Status.addErrorResponse(exc.getMessage());
                     }
                 }
             });

@@ -53,6 +53,14 @@ public class Status {
         incrementNumErrors();
     }
 
+    public static void addErrorResponse(String response){
+        if (!errorResponses.containsValue(response)) {
+            errorResponses.put(numErrors, response);
+        }
+
+        incrementNumErrors();
+    }
+
     public static void addSuccessResponse(HttpResponse response) {
         if (!successResponses.containsValue(response.getBody().toString())) {
             successResponses.put(numSuccesses, response.getBody().toString());
