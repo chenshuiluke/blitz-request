@@ -109,8 +109,8 @@ public class Status {
         StringBuffer report = new StringBuffer("URL: " + Config.getUrl() + " Method: " + Config.getMethod() +
                 " Number of Requests: " + Config.getNumRequests() + "\n");
         report.append("Time taken: " + df.format(totalTimeTaken) + "\n");
-        report.append("Number of Errors: " + numErrors + " (" + (numErrors / Config.getNumRequests()) * 100 + "%)\n");
-        report.append("Number of Successes: " + numSuccesses + " (" + (numSuccesses / Config.getNumRequests()) * 100 + "%)\n");
+        report.append("Number of Errors: " + numErrors + " (" + ((double)numErrors / Config.getNumRequests()) * 100 + "%)\n");
+        report.append("Number of Successes: " + numSuccesses + " (" + ((double)numSuccesses / Config.getNumRequests()) * 100 + "%)\n");
         report.append("Avg. Response Time: " + df.format(avgResponseTime) + "\n");
 
         if (numSuccesses > 0 && Config.isShowSuccesses()) {

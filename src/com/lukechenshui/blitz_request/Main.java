@@ -51,19 +51,11 @@ public class Main {
     });
 
     public static void main(String[] args) {
-        System.err.close();
-        Unirest.setTimeouts(0, 0);
+
+        Unirest.setTimeouts(30000, 30000);
         Config config = new Config();
-        /*
-        for(int counter = 0; counter < args.length; counter++){
-            String arg = args[counter];
-            arg.replace("\"", "\\\"");
-            arg.replace(",", "\\,");
-            arg.replace("{", "\\{");
-            arg.replace("}", "\\}");
-        }
-        */
         new JCommander(config, args);
+        System.err.close();
         Unirest.setConcurrency(Config.getNumConcurrentConnections(), Config.getNumConcurrentConnections());
         sendRequest();
         Status.report();
@@ -87,43 +79,47 @@ public class Main {
                 }
             }
         });
+        HttpRequest request = new HttpRequest(HttpMethod.GET, Config.getUrl());
+        switch (Config.getMethod()) {
+            case "GET":
+                request = Unirest.get(Config.getUrl());
+                break;
+            case "POST":
+                request = Unirest.post(Config.getUrl());
+                break;
+            case "PUT":
+                request = Unirest.put(Config.getUrl());
+                break;
+            case "DELETE":
+                request = Unirest.delete(Config.getUrl());
+                break;
+            case "DEFAULT":
+                throw new IllegalStateException();
+        }
+        if (!Config.getUrlQueries().isEmpty()) {
+            try {
+                JSONObject obj = new JSONObject(Config.getUrlQueries());
+                Iterator<?> keys = obj.keys();
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    //System.out.println("Key:" + key + " value: " + obj.get(key).toString());
+                    request.queryString(key, obj.get(key).toString());
+                }
+            } catch (JSONException exc) {
+                System.out.println("Invalid URL Query: " + Config.getUrlQueries());
+                exc.printStackTrace();
+                System.out.println(exc.getMessage());
+            }
+        }
+        final HttpRequest finalRequest = request;
         for (int counter = 0; counter < Config.getNumRequests(); counter++) {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    HttpRequest request = new HttpRequest(HttpMethod.GET, Config.getUrl());
-                    switch (Config.getMethod()) {
-                        case "GET":
-                            request = Unirest.get(Config.getUrl());
-                            break;
-                        case "POST":
-                            request = Unirest.post(Config.getUrl());
-                            break;
-                        case "PUT":
-                            request = Unirest.put(Config.getUrl());
-                            break;
-                        case "DELETE":
-                            request = Unirest.delete(Config.getUrl());
-                            break;
-                        case "DEFAULT":
-                            throw new IllegalStateException();
-                    }
-                    if (!Config.getUrlQueries().isEmpty()) {
-                        try {
-                            JSONObject obj = new JSONObject(Config.getUrlQueries());
-                            Iterator<?> keys = obj.keys();
-                            while (keys.hasNext()) {
-                                String key = (String) keys.next();
-                                request.queryString(key, obj.get(key).toString());
-                            }
-                        } catch (JSONException exc) {
-
-                        }
-                    }
 
                     try {
                         long startTime = System.currentTimeMillis();
-                        HttpResponse response = request.asString();
+                        HttpResponse response = finalRequest.asString();
                         long endTime = System.currentTimeMillis();
                         long elapsedTime = endTime - startTime;
                         lock.lock();

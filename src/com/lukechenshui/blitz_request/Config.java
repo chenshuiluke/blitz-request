@@ -3,6 +3,7 @@ package com.lukechenshui.blitz_request;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.validators.PositiveInteger;
 import com.lukechenshui.blitz_request.validators.HttpMethodValidator;
+import com.lukechenshui.blitz_request.validators.UrlQueryValidator;
 import com.lukechenshui.blitz_request.validators.UrlValidator;
 
 /**
@@ -17,7 +18,7 @@ public class Config {
     private static int numRequests;
     @Parameter(names = {"-t", "--threads"}, description = "The number of threads to use to make requests", validateWith = PositiveInteger.class)
     private static int numThreads;
-    @Parameter(names = {"-uq", "--url-queries"}, description = "URL query data")
+    @Parameter(names = {"-uq", "--url-queries"}, description = "URL query data", validateWith = UrlQueryValidator.class)
     private static String urlQueries;
     @Parameter(names = {"-se" ,"--show-errors"}, description = "Show error messages")
     private static boolean showErrors;
@@ -68,6 +69,8 @@ public class Config {
     }
 
     public static String getUrlQueries() {
+        urlQueries = urlQueries.replace("\'{", "{");
+        urlQueries = urlQueries.replace("}\'", "}");
         return urlQueries;
     }
 

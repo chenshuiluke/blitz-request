@@ -12,6 +12,8 @@ public class UrlQueryValidator implements IParameterValidator {
     @Override
     public void validate(String name, String value) throws ParameterException {
         try {
+            value = value.replace("\'{", "{");
+            value = value.replace("}\'", "}");
             JSONObject jsonObj = new JSONObject(value);
         } catch (JSONException exc) {
             exc.printStackTrace();
