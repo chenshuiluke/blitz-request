@@ -11,6 +11,6 @@ http://mappa-server.herokuapp.com/users/login
 -se
 -ss
 -nc
-1024
+4000
 -t
 10000
