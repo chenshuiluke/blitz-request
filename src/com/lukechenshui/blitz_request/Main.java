@@ -111,7 +111,7 @@ public class Main {
                 System.out.println(exc.getMessage());
             }
         }
-        if (Config.getFormData() != null) {
+        if (Config.getFormData() != null && !Config.getMethod().equals("GET")) {
             try {
                 JSONObject obj = new JSONObject(Config.getFormData());
                 Iterator<?> keys = obj.keys();

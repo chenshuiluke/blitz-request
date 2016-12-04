@@ -35,7 +35,6 @@ public class Config {
         numRequests = 1;
         numThreads = 1;
         numConcurrentConnections = 1024;
-        urlQueries = "";
     }
 
     public static String getUrl() {
@@ -71,8 +70,10 @@ public class Config {
     }
 
     public static String getUrlQueries() {
-        urlQueries = urlQueries.replace("\'{", "{");
-        urlQueries = urlQueries.replace("}\'", "}");
+        if (urlQueries != null) {
+            urlQueries = urlQueries.replace("\'{", "{");
+            urlQueries = urlQueries.replace("}\'", "}");
+        }
         return urlQueries;
     }
 
@@ -81,8 +82,10 @@ public class Config {
     }
 
     public static String getFormData() {
-        formData = formData.replace("\'{", "{");
-        formData = formData.replace("}\'", "}");
+        if (formData != null) {
+            formData = formData.replace("\'{", "{");
+            formData = formData.replace("}\'", "}");
+        }
         return formData;
     }
 
