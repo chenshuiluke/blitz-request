@@ -4,7 +4,7 @@ The best commandline REST API and stress tester.
 
 Prebuilt jar files can be found in `out/artifacts/blitz_request_jar`
 
-*JSON commandline parameters for url queries and fields serve as basic key-value pairs. So `-uq '{"name":"hehe@gmail.com","password":"kb0359"}'` would translate to ?name=hehe&password=kb0359.*
+*JSON commandline parameters for url queries and fields serve as basic key-value pairs. So `-uq '{"name":"hehe","password":"kb0359"}'` would translate to ?name=hehe&password=kb0359.*
 
 ##Usage:
     java -jar blitz-request.jar  -n <number_of_requests> -m <GET/POST/PUT/DELETE> -u <url>
