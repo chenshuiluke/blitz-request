@@ -1,9 +1,9 @@
 -n
-500
+100
 -m
-POST
+GET
 -u
-http://mappa-server.herokuapp.com/users/login
+http://utopiatehc.com/
 -uq
 '{"email":"hehe@gmail.com","password":"kb0359"}'
 -f
@@ -11,6 +11,6 @@ http://mappa-server.herokuapp.com/users/login
 -se
 -ss
 -nc
-4000
+400
 -t
-500
+1000
