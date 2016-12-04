@@ -6,6 +6,7 @@ import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import com.mashape.unirest.request.HttpRequest;
+import com.mashape.unirest.request.HttpRequestWithBody;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,10 +53,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Unirest.setTimeouts(30000, 30000);
+        Unirest.setTimeouts(300000, 300000);
         Config config = new Config();
         new JCommander(config, args);
-        System.err.close();
         Unirest.setConcurrency(Config.getNumConcurrentConnections(), Config.getNumConcurrentConnections());
         sendRequest();
         Status.report();
@@ -79,7 +79,7 @@ public class Main {
                 }
             }
         });
-        HttpRequest request = new HttpRequest(HttpMethod.GET, Config.getUrl());
+        Object request = new HttpRequestWithBody(HttpMethod.GET, Config.getUrl());
         switch (Config.getMethod()) {
             case "GET":
                 request = Unirest.get(Config.getUrl());
@@ -96,14 +96,14 @@ public class Main {
             case "DEFAULT":
                 throw new IllegalStateException();
         }
-        if (!Config.getUrlQueries().isEmpty()) {
+        if (Config.getUrlQueries() != null) {
             try {
                 JSONObject obj = new JSONObject(Config.getUrlQueries());
                 Iterator<?> keys = obj.keys();
                 while (keys.hasNext()) {
                     String key = (String) keys.next();
                     //System.out.println("Key:" + key + " value: " + obj.get(key).toString());
-                    request.queryString(key, obj.get(key).toString());
+                    ((HttpRequest)request).queryString(key, obj.get(key).toString());
                 }
             } catch (JSONException exc) {
                 System.out.println("Invalid URL Query: " + Config.getUrlQueries());
@@ -111,7 +111,22 @@ public class Main {
                 System.out.println(exc.getMessage());
             }
         }
-        final HttpRequest finalRequest = request;
+        if (Config.getFormData() != null) {
+            try {
+                JSONObject obj = new JSONObject(Config.getFormData());
+                Iterator<?> keys = obj.keys();
+                while (keys.hasNext()) {
+                    String key = (String) keys.next();
+                    //System.out.println("Key:" + key + " value: " + obj.get(key).toString());
+                    ((HttpRequestWithBody)request).field(key, obj.get(key).toString());
+                }
+            } catch (JSONException exc) {
+                System.out.println("Invalid URL Query: " + Config.getUrlQueries());
+                exc.printStackTrace();
+                System.out.println(exc.getMessage());
+            }
+        }
+        final HttpRequest finalRequest = (HttpRequest)request;
         for (int counter = 0; counter < Config.getNumRequests(); counter++) {
             Thread thread = new Thread(new Runnable() {
                 @Override

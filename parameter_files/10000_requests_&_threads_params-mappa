@@ -1,0 +1,16 @@
+-n
+10000
+-m
+POST
+-u
+http://mappa-server.herokuapp.com/users/login
+-uq
+'{"email":"hehe@gmail.com","password":"kb0359"}'
+-f
+'{"email":"bleh@gmail.com","password":"kb0359"}'
+-se
+-ss
+-nc
+1024
+-t
+10000

@@ -20,6 +20,8 @@ public class Config {
     private static int numThreads;
     @Parameter(names = {"-uq", "--url-queries"}, description = "URL query data", validateWith = UrlQueryValidator.class)
     private static String urlQueries;
+    @Parameter(names = {"-f", "--form-data"}, description = "form data", validateWith = UrlQueryValidator.class)
+    private static String formData;
     @Parameter(names = {"-se" ,"--show-errors"}, description = "Show error messages")
     private static boolean showErrors;
     @Parameter(names = {"-ss", "--show-successes"}, description = "Show success messages")
@@ -76,6 +78,16 @@ public class Config {
 
     public static void setUrlQueries(String urlQueries) {
         Config.urlQueries = urlQueries;
+    }
+
+    public static String getFormData() {
+        formData = formData.replace("\'{", "{");
+        formData = formData.replace("}\'", "}");
+        return formData;
+    }
+
+    public static void setFormData(String formData) {
+        Config.formData = formData;
     }
 
     public static boolean isShowErrors() {
