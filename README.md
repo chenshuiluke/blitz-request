@@ -1,6 +1,6 @@
 #Blitz-Request
 The best commandline REST API and stress tester.
-![blitz-request demo](https://raw.githubusercontent.com/chenshuiluke/blitz-request/master/demo.gif)
+![blitz-request demo](https://github.com/chenshuiluke/blitz-request/blob/master/demo.gif?raw=true)
 
 Prebuilt jar files can be found in `out/artifacts/blitz_request_jar`
 
