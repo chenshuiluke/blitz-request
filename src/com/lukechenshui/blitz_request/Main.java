@@ -112,6 +112,7 @@ public class Main {
             }
         }
         if (Config.getFormData() != null && !Config.getMethod().equals("GET")) {
+
             try {
                 JSONObject obj = new JSONObject(Config.getFormData());
                 Iterator<?> keys = obj.keys();
@@ -126,6 +127,22 @@ public class Main {
                 System.out.println(exc.getMessage());
             }
         }
+        else if(Config.getMethod().equals("GET")){
+            System.out.println("Not sending form data because the request is of type GET");
+        }
+        if (Config.getJsonData() != null && (Config.getFormData() == null && Config.getUrlQueries() == null) && !Config.getMethod().equals("GET")) {
+            try {
+                JSONObject obj = new JSONObject(Config.getJsonData());
+                ((HttpRequestWithBody)request).body(obj);
+            } catch (JSONException exc) {
+                System.out.println("Invalid URL Query: " + Config.getUrlQueries());
+                exc.printStackTrace();
+                System.out.println(exc.getMessage());
+            }
+        }
+        else if(Config.getJsonData() != null){
+            System.out.println("Not sending form data because the request is of type GET or form / url query data is being sent.");
+        }
         final HttpRequest finalRequest = (HttpRequest)request;
         for (int counter = 0; counter < Config.getNumRequests(); counter++) {
             Thread thread = new Thread(new Runnable() {
@@ -134,7 +151,18 @@ public class Main {
 
                     try {
                         long startTime = System.currentTimeMillis();
-                        HttpResponse response = finalRequest.asString();
+                        HttpResponse response;
+                        if(Config.getJsonData() != null){
+                            if(((Config.getFormData() == null && Config.getUrlQueries() == null) && !Config.getMethod().equals("GET"))){
+                                response = finalRequest.asString();
+                            }
+                            else{
+                                response = finalRequest.asString();
+                            }
+                        }
+                        else{
+                            response = finalRequest.asString();
+                        }
                         long endTime = System.currentTimeMillis();
                         long elapsedTime = endTime - startTime;
                         lock.lock();

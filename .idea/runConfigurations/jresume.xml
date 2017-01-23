@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="10000 Requests&amp;Threads" type="Application" factoryName="Application">
+  <configuration default="false" name="jresume" type="Application" factoryName="Application">
     <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
     <option name="MAIN_CLASS_NAME" value="com.lukechenshui.blitz_request.Main" />
     <option name="VM_PARAMETERS" value="" />
-    <option name="PROGRAM_PARAMETERS" value="@parameter_files/10000_requests_and_threads_params-mappa" />
+    <option name="PROGRAM_PARAMETERS" value="@parameter_files/100_requests_and_threads_params-jresume" />
     <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
     <option name="ALTERNATIVE_JRE_PATH" />

@@ -46,7 +46,7 @@ public class Status {
     }
 
     public static void addErrorResponse(HttpResponse response) {
-        if (!errorResponses.containsValue(response.getBody().toString())) {
+        if (Config.isShowErrors() && !errorResponses.containsValue(response.getBody().toString())) {
             errorResponses.put(numErrors, response.getBody().toString());
         }
 
@@ -54,7 +54,7 @@ public class Status {
     }
 
     public static void addErrorResponse(String response){
-        if (!errorResponses.containsValue(response)) {
+        if (Config.isShowErrors() && !errorResponses.containsValue(response)) {
             errorResponses.put(numErrors, response);
         }
 
@@ -62,7 +62,7 @@ public class Status {
     }
 
     public static void addSuccessResponse(HttpResponse response) {
-        if (!successResponses.containsValue(response.getBody().toString())) {
+        if (Config.isShowSuccesses() && !successResponses.containsValue(response.getBody().toString())) {
             successResponses.put(numSuccesses, response.getBody().toString());
         }
 

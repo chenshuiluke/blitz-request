@@ -22,6 +22,8 @@ public class Config {
     private static String urlQueries;
     @Parameter(names = {"-f", "--form-data"}, description = "form data", validateWith = UrlQueryValidator.class)
     private static String formData;
+    @Parameter(names = {"-j", "--json-data"}, description = "json data", validateWith = UrlQueryValidator.class)
+    private static String jsonData;
     @Parameter(names = {"-se" ,"--show-errors"}, description = "Show error messages")
     private static boolean showErrors;
     @Parameter(names = {"-ss", "--show-successes"}, description = "Show success messages")
@@ -115,5 +117,17 @@ public class Config {
 
     public static void setNumConcurrentConnections(int numConcurrentConnections) {
         Config.numConcurrentConnections = numConcurrentConnections;
+    }
+
+    public static String getJsonData() {
+        if (jsonData != null) {
+            jsonData = jsonData.replace("\'{", "{");
+            jsonData = jsonData.replace("}\'", "}");
+        }
+        return jsonData;
+    }
+
+    public static void setJsonData(String jsonData) {
+        Config.jsonData = jsonData;
     }
 }
